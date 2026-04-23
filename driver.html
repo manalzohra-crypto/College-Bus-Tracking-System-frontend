@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Driver GPS</title>
+</head>
+
+<body>
+
+<h2>Sending Location...</h2>
+
+<script>
+
+const API = "https://your-app.onrender.com/update";
+
+function sendLocation(){
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+fetch(API,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+lat: pos.coords.latitude,
+lng: pos.coords.longitude
+})
+});
+
+});
+
+}
+
+setInterval(sendLocation,5000);
+
+</script>
+
+</body>
+</html>
