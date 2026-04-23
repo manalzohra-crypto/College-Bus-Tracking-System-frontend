@@ -1,4 +1,4 @@
-const API = "https://college-bus-tracking-system-zeam.onrender.com/location";
+const API = "https://college-bus-tracking-system-zeam.onrender.comlocation";
 
 var map = L.map('map').setView([0, 0], 15);
 
