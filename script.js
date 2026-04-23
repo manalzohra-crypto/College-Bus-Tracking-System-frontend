@@ -1,21 +1,13 @@
-const API = "https://your-app.onrender.com/location";
+const API = "https://college-bus-tracking-system-zeam.onrender.com/location";
 
-var map;
-var marker;
+var map = L.map('map').setView([0, 0], 15);
 
-function initMap(){
+// Load OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
 
-map = new google.maps.Map(document.getElementById("map"),{
-zoom:15,
-center:{lat:0,lng:0}
-});
-
-marker = new google.maps.Marker({
-position:{lat:0,lng:0},
-map:map
-});
-
-}
+var marker = L.marker([0, 0]).addTo(map);
 
 function updateBus(){
 
@@ -23,13 +15,14 @@ fetch(API)
 .then(res => res.json())
 .then(data => {
 
-var pos = {lat:data.lat, lng:data.lng};
+var lat = data.lat;
+var lng = data.lng;
 
-marker.setPosition(pos);
-map.setCenter(pos);
+marker.setLatLng([lat, lng]);
+map.setView([lat, lng]);
 
 });
 
 }
 
-setInterval(updateBus,5000);
+setInterval(updateBus, 5000);
