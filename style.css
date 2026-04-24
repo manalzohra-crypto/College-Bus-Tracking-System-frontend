@@ -1,10 +1,10 @@
-body{
-text-align:center;
-font-family:Arial;
+body {
+  text-align: center;
+  font-family: Arial;
 }
 
-#map{
-height:500px;
-width:90%;
-margin:auto;
+#map {
+  height: 500px;
+  width: 90%;
+  margin: auto;
 }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Driver GPS</title>
+  <title>Driver GPS Sender</title>
 </head>
 
 <body>
 
-<h2>Sending Location...</h2>
+<h2>Bus Location Sharing Active</h2>
 
 <script>
 
@@ -14,24 +14,38 @@ const API = "https://college-bus-tracking-system-zeam.onrender.com/update";
 
 function sendLocation(){
 
-navigator.geolocation.getCurrentPosition(function(pos){
+  navigator.geolocation.getCurrentPosition(function(position){
 
-fetch(API,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify({
-lat: pos.coords.latitude,
-lng: pos.coords.longitude
-})
-});
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
 
-});
+    console.log("Sending:", lat, lng);
+
+    fetch(API,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        lat: lat,
+        lng: lng
+      })
+    })
+    .then(res => console.log("Sent"))
+    .catch(err => console.log("Error:", err));
+
+  }, function(error){
+    console.log("GPS Error:", error);
+  }, {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  });
 
 }
 
-setInterval(sendLocation,5000);
+// Send every 2 seconds
+setInterval(sendLocation, 2000);
 
 </script>
 
