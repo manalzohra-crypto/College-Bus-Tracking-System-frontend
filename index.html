@@ -1,24 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org; connect-src 'self' https://*.tile.openstreetmap.org https://college-bus-tracking-system-zeam.onrender.com; object-src 'none'; frame-src 'none';">
   <title>College Bus Live Tracking</title>
-
   <link rel="stylesheet" href="style.css">
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" crossorigin="anonymous">
 </head>
 
 <body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Campus shuttle tracking</p>
+        <h1>College Bus Live</h1>
+        <p class="intro">Track your campus shuttle in real-time. No app required - works on any device.</p>
+      </div>
+      <span class="status-chip">Live</span>
+    </header>
 
-  <h1>College Bus Live Tracking</h1>
+    <section class="key-metrics">
+      <article class="metric-card">
+        <span class="metric-label">Active buses</span>
+        <strong id="active-buses-count">0</strong>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">Tracking</span>
+        <strong id="tracked-bus">All buses</strong>
+      </article>
+      <article class="metric-card">
+        <span class="metric-label">Last update</span>
+        <strong id="last-update">—</strong>
+      </article>
+    </section>
 
-  <div id="map"></div>
+    <section class="bus-selector">
+      <label for="bus-filter">Select a bus to track:</label>
+      <select id="bus-filter" class="bus-select">
+        <option value="all">All buses</option>
+      </select>
+    </section>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <section class="map-panel">
+      <div class="map-topbar">
+        <div>
+          <span class="map-label">Live bus position</span>
+          <p class="map-caption">Auto-refreshing every 2 seconds for seamless tracking.</p>
+        </div>
+        <button id="toggle-center" class="pill-button">Center map</button>
+      </div>
 
+      <div id="map" class="map-frame"></div>
+
+      <div class="map-overlay">
+        <p class="overlay-title">Active buses</p>
+        <div id="buses-list" class="buses-list">
+          <p class="empty-state">Waiting for buses…</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js" crossorigin="anonymous"></script>
   <script src="script.js"></script>
-
 </body>
 </html>
