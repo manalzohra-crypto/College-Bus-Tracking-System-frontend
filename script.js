@@ -1,7 +1,6 @@
-const DEFAULT_API_HOST = 'https://college-bus-tracking-system-zeam.onrender.com';
-const API_BASE = window.location.protocol.startsWith('http') ? window.location.origin : DEFAULT_API_HOST;
-const API_BUSES = `${API_BASE}/buses`;
-const API_LOCATION = `${API_BASE}/location`;
+// Always use Render backend for reliable cross-origin access
+const API_BUSES = 'https://college-bus-tracking-system-zeam.onrender.com/buses';
+const API_LOCATION = 'https://college-bus-tracking-system-zeam.onrender.com/location';
 
 // Initialize map
 const map = L.map('map').setView([0, 0], 15);

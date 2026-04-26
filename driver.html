@@ -28,9 +28,8 @@
   </div>
 
   <script>
-  const DEFAULT_API_HOST = 'https://college-bus-tracking-system-zeam.onrender.com';
-  const API_BASE = window.location.protocol.startsWith('http') ? window.location.origin : DEFAULT_API_HOST;
-  const API = `${API_BASE}/update`;
+  // Always use Render backend, never local origin
+  const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
   const busIdInput = document.getElementById('bus-id-input');
 
   function getBusId() {
