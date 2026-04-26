@@ -3,92 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver GPS Sender</title>
+  <title>Driver GPS</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="driver-shell">
     <div class="driver-card">
-      <p class="eyebrow">Campus shuttle driver</p>
-      <h2>Share location</h2>
-      <p class="intro">Keep GPS enabled to share your shuttle's location with students across campus.</p>
-      
+
+      <p class="eyebrow">Driver Panel</p>
+      <h2>Share Location</h2>
+
       <div class="driver-input-group">
-        <label for="bus-id-input">Your bus ID (e.g., Route-1, Shuttle-A):</label>
-        <input type="text" id="bus-id-input" placeholder="Enter bus identifier" value="Bus-1" class="bus-id-field">
+        <label>Bus ID</label>
+        <input id="bus-id-input" value="Bus-1">
       </div>
 
       <div class="driver-status">
         <span>Status</span>
-        <strong id="driver-status">Active</strong>
+        <strong id="driver-status">Idle</strong>
       </div>
-      <p class="driver-note">Location updates every 2 seconds. Use a unique bus ID so students can track your specific shuttle.</p>
+
     </div>
   </div>
 
-  <script>
-  // Always use Render backend, never local origin
-  const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
-  const busIdInput = document.getElementById('bus-id-input');
+<script>
+const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
+let lastSent = 0;
 
-  function getBusId() {
-    return busIdInput ? (busIdInput.value.trim() || 'Bus-1') : 'Bus-1';
-  }
+function getBusId() {
+  return document.getElementById('bus-id-input').value || 'Bus-1';
+}
 
-  function sendLocation(){
-    if (!navigator.geolocation) {
-      console.error('Geolocation is not supported by this browser.');
-      const status = document.getElementById('driver-status');
-      if (status) status.textContent = 'Unsupported';
-      return;
-    }
+function sendLocation() {
+  const now = Date.now();
+  if (now - lastSent < 5000) return;
+  lastSent = now;
 
-    navigator.geolocation.getCurrentPosition(function(position){
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const bus_id = getBusId();
+  const status = document.getElementById('driver-status');
+  status.textContent = 'Sending...';
 
-      fetch(API,{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-        },
+  navigator.geolocation.getCurrentPosition(async pos => {
+    try {
+      await fetch(API, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
         body: JSON.stringify({
-          bus_id: bus_id,
-          lat: lat,
-          lng: lng,
-        }),
-      })
-      .then(res => {
-        if (!res.ok) {
-          console.error('Tracker update failed:', res.status);
-          const status = document.getElementById('driver-status');
-          if (status) status.textContent = 'Error';
-          return;
-        }
-        console.log('Location sent for', bus_id);
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        const status = document.getElementById('driver-status');
-        if (status) status.textContent = 'Error';
+          bus_id: getBusId(),
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        })
       });
 
-    }, function(error){
-      console.error('GPS Error:', error);
-      const status = document.getElementById('driver-status');
-      if (status) {
-        status.textContent = 'Error';
-      }
-    }, {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    });
-  }
+      status.textContent = 'Live';
 
-  setInterval(sendLocation, 2000);
-  </script>
+    } catch {
+      status.textContent = 'Offline';
+    }
+
+  }, err => {
+    status.textContent = 'GPS denied';
+  });
+}
+
+setInterval(sendLocation, 2000);
+</script>
+
 </body>
 </html>
