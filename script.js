@@ -8,6 +8,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 const markers = {};
+let autoCenter = true;
+
+document.getElementById('toggle-center').onclick = () => {
+  autoCenter = !autoCenter;
+};
 
 async function update() {
   try {
@@ -18,7 +23,7 @@ async function update() {
     document.getElementById('active-buses-count').textContent = buses.length;
 
     if (buses.length === 0) {
-      map.setView([20,0],2);
+      map.setView([20, 0], 2);
       return;
     }
 
@@ -34,6 +39,10 @@ async function update() {
         markers[bus_id] = L.marker([location.lat, location.lng]).addTo(map);
       } else {
         markers[bus_id].setLatLng([location.lat, location.lng]);
+      }
+
+      if (autoCenter) {
+        map.panTo([location.lat, location.lng]);
       }
     });
 

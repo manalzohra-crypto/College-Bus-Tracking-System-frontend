@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Driver GPS</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="driver-shell">
-    <div class="driver-card">
+    <div class="driver-card glass">
 
       <p class="eyebrow">Driver Panel</p>
       <h2>Share Location</h2>
@@ -32,7 +33,7 @@ const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
 let lastSent = 0;
 
 function getBusId() {
-  return document.getElementById('bus-id-input').value || 'Bus-1';
+  return document.getElementById('bus-id-input').value.trim() || 'Bus-1';
 }
 
 function sendLocation() {
@@ -42,6 +43,11 @@ function sendLocation() {
 
   const status = document.getElementById('driver-status');
   status.textContent = 'Sending...';
+
+  if (!navigator.geolocation) {
+    status.textContent = 'No GPS';
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(async pos => {
     try {
@@ -61,7 +67,7 @@ function sendLocation() {
       status.textContent = 'Offline';
     }
 
-  }, err => {
+  }, () => {
     status.textContent = 'GPS denied';
   });
 }
