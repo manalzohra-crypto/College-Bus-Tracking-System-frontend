@@ -1,52 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Driver Panel</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver GPS</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="driver-shell">
+    <div class="driver-card glass">
 
-<div class="driver-shell">
-  <div class="driver-card glass">
+      <p class="eyebrow">Driver Panel</p>
+      <h2>Share Location</h2>
 
-    <h2>Driver Panel</h2>
+      <div class="driver-input-group">
+        <label>Bus ID</label>
+        <input id="bus-id-input" value="Bus-1">
+      </div>
 
-    <input id="bus-id" value="Bus-1">
+      <div class="driver-status">
+        <span>Status</span>
+        <strong id="driver-status">Idle</strong>
+      </div>
 
-    <div class="driver-status">
-      <span>Status</span>
-      <strong id="status">Idle</strong>
     </div>
-
   </div>
-</div>
 
 <script>
-const API = "https://your-render-url.onrender.com/update";
+const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
+let lastSent = 0;
 
-function sendLocation(){
+function getBusId() {
+  return document.getElementById('bus-id-input').value.trim() || 'Bus-1';
+}
+
+function sendLocation() {
+  const now = Date.now();
+  if (now - lastSent < 5000) return;
+  lastSent = now;
+
+  const status = document.getElementById('driver-status');
+  status.textContent = 'Sending...';
+
+  if (!navigator.geolocation) {
+    status.textContent = 'No GPS';
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(async pos => {
+    try {
+      await fetch(API, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          bus_id: getBusId(),
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        })
+      });
 
-    document.getElementById("status").textContent = "Sending";
+      status.textContent = 'Live';
 
-    await fetch(API,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        bus_id: document.getElementById("bus-id").value,
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      })
-    });
+    } catch {
+      status.textContent = 'Offline';
+    }
 
-    document.getElementById("status").textContent = "Live";
-
+  }, () => {
+    status.textContent = 'GPS denied';
   });
 }
 
-setInterval(sendLocation,2000);
+setInterval(sendLocation, 2000);
 </script>
 
 </body>

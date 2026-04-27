@@ -1,26 +1,17 @@
-const API = "https://college-bus-tracking-system-zeam.onrender.com/buses";
+const API = 'https://college-bus-tracking-system-zeam.onrender.com/buses';
 
-const map = L.map("map");
+const map = L.map('map');
 let mapInitialized = false;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
 }).addTo(map);
 
-let markers = {};
-let lastPositions = {};
+const markers = {};
 let autoCenter = true;
-let lastCenter = null;
 
-// CENTER BUTTON FIX
-document.getElementById("center-btn").onclick = () => {
-  autoCenter = true;
-  if (lastCenter) map.panTo(lastCenter);
-};
-
-// DARK MODE FIX
-document.getElementById("dark-btn").onclick = () => {
-  document.body.classList.toggle("dark");
+document.getElementById('toggle-center').onclick = () => {
+  autoCenter = !autoCenter;
 };
 
 async function update() {
@@ -29,61 +20,39 @@ async function update() {
     const data = await res.json();
     const buses = data.buses || [];
 
-    if (buses.length === 0) return;
+    document.getElementById('active-buses-count').textContent = buses.length;
+
+    if (buses.length === 0) {
+      map.setView([20, 0], 2);
+      return;
+    }
 
     buses.forEach(bus => {
-      const { bus_id, location } = bus;
+      const {bus_id, location} = bus;
 
-      const newLatLng = [location.lat, location.lng];
-
-      // First load
       if (!mapInitialized) {
-        map.setView(newLatLng, 15);
+        map.setView([location.lat, location.lng], 15);
         mapInitialized = true;
       }
 
-      // Create marker
       if (!markers[bus_id]) {
-        markers[bus_id] = L.marker(newLatLng).addTo(map);
-      }
-
-      // Smooth animation
-      let prev = lastPositions[bus_id];
-
-      if (prev) {
-        let steps = 8;
-        let i = 0;
-
-        let latStep = (location.lat - prev.lat) / steps;
-        let lngStep = (location.lng - prev.lng) / steps;
-
-        let anim = setInterval(() => {
-          i++;
-          let lat = prev.lat + latStep * i;
-          let lng = prev.lng + lngStep * i;
-
-          markers[bus_id].setLatLng([lat, lng]);
-
-          if (i >= steps) clearInterval(anim);
-        }, 50);
+        markers[bus_id] = L.marker([location.lat, location.lng]).addTo(map);
       } else {
-        markers[bus_id].setLatLng(newLatLng);
+        markers[bus_id].setLatLng([location.lat, location.lng]);
       }
 
-      lastPositions[bus_id] = location;
-      lastCenter = newLatLng;
-
-      // ONLY pan, no zoom reset
       if (autoCenter) {
-        map.panTo(newLatLng);
+        map.panTo([location.lat, location.lng]);
       }
     });
 
-  } catch (err) {
-    console.log(err);
+    document.getElementById('last-update').textContent =
+      new Date().toLocaleTimeString();
+
+  } catch (e) {
+    console.error(e);
   }
 }
 
-// Run immediately + loop
 update();
 setInterval(update, 3000);

@@ -1,79 +1,102 @@
+:root {
+  --bg: linear-gradient(135deg, #F8F3EF, #F2E8E0);
+  --glass: rgba(255,255,255,0.65);
+  --border: rgba(255,255,255,0.25);
+
+  --text: #2F3E3E;
+  --muted: #7F908C;
+
+  --accent: #E6B89C;
+  --highlight: #F4A261;
+  --action: #E76F51;
+  --success: #2A9D8F;
+
+  --shadow: 0 25px 60px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg,#f5eee8,#f1e4da);
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .app-shell {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: auto;
-  padding: 20px;
+  padding: 30px;
 }
 
 .glass {
-  background: rgba(255,255,255,0.6);
-  padding: 20px;
-  border-radius: 20px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .app-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 25px;
+  margin-bottom: 20px;
 }
 
-.status-circle {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #c92020;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.status-chip {
+  background: rgba(42,157,143,0.15);
+  padding: 10px 20px;
+  border-radius: 999px;
 }
 
-/* BUTTONS */
-.controls {
-  margin: 15px 0;
+.key-metrics {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg,#d82626,#f2241d);
-  color: white;
-  margin-right: 10px;
+.metric-card {
+  padding: 20px;
 }
 
-/* MAP */
-#map {
-  height: 520px;
+.map-panel { padding: 20px; }
+
+.map-frame {
+  height: 480px;
   border-radius: 20px;
+  overflow: hidden;
+  margin-top: 10px;
 }
 
-/* DRIVER PANEL */
+.pill-button {
+  background: linear-gradient(135deg, var(--action), var(--highlight));
+  border: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+}
+
 .driver-shell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
+  display: grid;
+  place-items: center;
 }
 
 .driver-card {
+  padding: 30px;
   width: 320px;
-  text-align: center;
 }
 
 .driver-status {
-  display: flex;
-  justify-content: space-between;
   margin-top: 20px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(42,157,143,0.1);
 }
 
-/* DARK MODE */
-.dark {
-  background: #1a1a1a;
-  color: white;
+@media(max-width: 768px){
+  .key-metrics { grid-template-columns: 1fr; }
 }
