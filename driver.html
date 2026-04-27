@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver GPS</title>
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver GPS</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="driver-shell">
-    <div class="driver-card glass">
+<div class="driver-shell">
+  <div class="driver-card glass">
 
-      <p class="eyebrow">Driver Panel</p>
-      <h2>Share Location</h2>
+    <p class="eyebrow">Driver Panel</p>
+    <h2>Share Location</h2>
 
-      <div class="driver-input-group">
-        <label>Bus ID</label>
-        <input id="bus-id-input" value="Bus-1">
-      </div>
-
-      <div class="driver-status">
-        <span>Status</span>
-        <strong id="driver-status">Idle</strong>
-      </div>
-
+    <div class="driver-input-group">
+      <label>Bus ID</label>
+      <input id="bus-id-input" value="Bus-1">
     </div>
+
+    <div class="driver-status-row">
+      <span>Status</span>
+      <span id="driver-status" class="status-badge idle">Idle</span>
+    </div>
+
   </div>
+</div>
 
 <script>
 const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
 let lastSent = 0;
+
+function setStatus(text, cls){
+  const el = document.getElementById('driver-status');
+  el.textContent = text;
+  el.className = "status-badge " + cls;
+}
 
 function getBusId() {
   return document.getElementById('bus-id-input').value.trim() || 'Bus-1';
@@ -38,14 +43,13 @@ function getBusId() {
 
 function sendLocation() {
   const now = Date.now();
-  if (now - lastSent < 5000) return;
+  if (now - lastSent < 4000) return;
   lastSent = now;
 
-  const status = document.getElementById('driver-status');
-  status.textContent = 'Sending...';
+  setStatus("Sending", "sending");
 
   if (!navigator.geolocation) {
-    status.textContent = 'No GPS';
+    setStatus("No GPS", "offline");
     return;
   }
 
@@ -61,14 +65,14 @@ function sendLocation() {
         })
       });
 
-      status.textContent = 'Live';
+      setStatus("Live", "live");
 
     } catch {
-      status.textContent = 'Offline';
+      setStatus("Offline", "offline");
     }
 
   }, () => {
-    status.textContent = 'GPS denied';
+    setStatus("GPS Denied", "offline");
   });
 }
 

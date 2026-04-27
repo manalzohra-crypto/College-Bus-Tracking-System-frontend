@@ -1,20 +1,17 @@
 :root {
-  --bg: linear-gradient(135deg, #F8F3EF, #F2E8E0);
-  --glass: rgba(255,255,255,0.65);
-  --border: rgba(255,255,255,0.25);
+  --bg: linear-gradient(135deg, #1a1a1a, #2b2b2b);
+  --glass: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.1);
 
-  --text: #2F3E3E;
-  --muted: #7F908C;
+  --text: #f5f5f5;
+  --muted: #aaa;
 
-  --accent: #E6B89C;
-  --highlight: #F4A261;
-  --action: #E76F51;
-  --success: #2A9D8F;
+  --accent: #ff4d6d; /* blood red */
+  --highlight: #ff7b00;
+  --success: #2ecc71;
 
-  --shadow: 0 25px 60px rgba(0,0,0,0.08);
+  --shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
-
-* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -23,80 +20,66 @@ body {
   color: var(--text);
 }
 
+/* CENTER LAYOUT */
 .app-shell {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: auto;
   padding: 30px;
 }
 
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.app-header {
+/* DRIVER */
+.driver-status-row {
   display: flex;
   justify-content: space-between;
-  padding: 25px;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.status-chip {
-  background: rgba(42,157,143,0.15);
-  padding: 10px 20px;
+.status-badge {
+  padding: 6px 14px;
   border-radius: 999px;
+  font-size: 12px;
 }
 
+.status-badge.live { background: #2ecc71; }
+.status-badge.sending { background: orange; }
+.status-badge.offline { background: red; }
+.status-badge.idle { background: gray; }
+
+/* LIVE DOT */
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* MAP */
+.map-frame {
+  height: 520px;
+  border-radius: 20px;
+}
+
+/* WIDER SECTIONS */
 .key-metrics {
   display: grid;
   grid-template-columns: repeat(3,1fr);
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 20px;
 }
 
-.metric-card {
-  padding: 20px;
-}
-
-.map-panel { padding: 20px; }
-
-.map-frame {
-  height: 480px;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
+/* BUTTON */
 .pill-button {
-  background: linear-gradient(135deg, var(--action), var(--highlight));
+  background: linear-gradient(135deg, var(--accent), var(--highlight));
   border: none;
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: 999px;
   color: white;
   cursor: pointer;
-}
-
-.driver-shell {
-  height: 100vh;
-  display: grid;
-  place-items: center;
-}
-
-.driver-card {
-  padding: 30px;
-  width: 320px;
-}
-
-.driver-status {
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(42,157,143,0.1);
-}
-
-@media(max-width: 768px){
-  .key-metrics { grid-template-columns: 1fr; }
 }
