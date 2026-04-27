@@ -1,59 +1,121 @@
+:root {
+  --bg: #121212;
+  --card: rgba(255,255,255,0.05);
+  --text: #f5f5f5;
+
+  --accent: #ff4d6d;
+  --nude: #d6bfa9;
+  --highlight: #ff7b00;
+
+  --border: rgba(255,255,255,0.1);
+}
+
+/* LIGHT MODE */
+body.light {
+  --bg: #f5efe8;
+  --card: rgba(255,255,255,0.85);
+  --text: #222;
+
+  --accent: #d62828;
+  --nude: #e6ccb2;
+  --highlight: #f77f00;
+
+  --border: rgba(0,0,0,0.1);
+}
+
 body {
   margin:0;
-  font-family: Arial;
-  background:#1a1a1a;
-  color:white;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .app-shell {
-  max-width:1200px;
+  max-width: 1400px;
   margin:auto;
   padding:20px;
 }
 
 .glass {
-  background: rgba(255,255,255,0.05);
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
   padding:20px;
-  border-radius:20px;
 }
 
-.map-frame {
-  height:500px;
-  border-radius:20px;
-}
-
-.driver-shell {
-  height:100vh;
+/* HEADER */
+.app-header {
   display:flex;
-  justify-content:center;
+  justify-content:space-between;
   align-items:center;
 }
 
-.driver-status-row {
+.header-controls {
   display:flex;
-  justify-content:space-between;
-  margin-top:20px;
+  align-items:center;
+  gap:15px;
 }
 
-.status-badge {
-  padding:5px 10px;
-  border-radius:20px;
-}
-
-.live { background:green; }
-.sending { background:orange; }
-.offline { background:red; }
-.idle { background:gray; }
-
+/* LIVE DOT */
 .live-indicator {
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
 }
 
 .live-dot {
   width:10px;
   height:10px;
   border-radius:50%;
-  background:red;
+  background: var(--accent);
+  box-shadow:0 0 10px var(--accent);
+}
+
+/* CONTROLS */
+.controls {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px 0;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.control-group {
+  display:flex;
+  flex-direction:column;
+}
+
+select {
+  padding:8px;
+  border-radius:8px;
+  border:none;
+}
+
+/* MAP */
+.map-frame {
+  height:520px;
+  border-radius:20px;
+}
+
+/* BUTTON */
+.pill-button {
+  background: linear-gradient(135deg, var(--accent), var(--highlight));
+  border:none;
+  padding:8px 14px;
+  border-radius:999px;
+  color:white;
+  cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  .controls {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .map-frame {
+    height:350px;
+  }
 }
