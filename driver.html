@@ -12,10 +12,7 @@
 
     <h2>Driver Panel</h2>
 
-    <div class="driver-input-group">
-      <label>Bus ID</label>
-      <input id="bus-id" value="Bus-1">
-    </div>
+    <input id="bus-id" value="Bus-1">
 
     <div class="driver-status">
       <span>Status</span>
@@ -29,11 +26,10 @@
 const API = "https://your-render-url.onrender.com/update";
 
 function sendLocation(){
-  const status = document.getElementById("status");
 
   navigator.geolocation.getCurrentPosition(async pos => {
 
-    status.textContent = "Sending...";
+    document.getElementById("status").textContent = "Sending";
 
     await fetch(API,{
       method:"POST",
@@ -45,7 +41,7 @@ function sendLocation(){
       })
     });
 
-    status.textContent = "Live";
+    document.getElementById("status").textContent = "Live";
 
   });
 }

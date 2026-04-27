@@ -1,78 +1,79 @@
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f5eee8;
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg,#f5eee8,#f1e4da);
 }
 
-.app-shell{
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
+.app-shell {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
 }
 
-.glass{
-  background:rgba(255,255,255,0.6);
-  padding:20px;
-  border-radius:20px;
+.glass {
+  background: rgba(255,255,255,0.6);
+  padding: 20px;
+  border-radius: 20px;
 }
 
-.app-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.status-circle{
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:#8B0000;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.status-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #c92020;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#map{
-  height:500px;
-  margin-top:20px;
-  border-radius:20px;
+/* BUTTONS */
+.controls {
+  margin: 15px 0;
 }
 
-.controls{
-  margin-top:10px;
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#d82626,#f2241d);
+  color: white;
+  margin-right: 10px;
 }
 
-button{
-  padding:10px;
-  margin-right:10px;
-  border:none;
-  border-radius:10px;
-  background:#E76F51;
-  color:white;
+/* MAP */
+#map {
+  height: 520px;
+  border-radius: 20px;
 }
 
-/* DRIVER */
-.driver-shell{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+/* DRIVER PANEL */
+.driver-shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.driver-card{
-  width:300px;
-  text-align:center;
+.driver-card {
+  width: 320px;
+  text-align: center;
 }
 
-.driver-status{
-  display:flex;
-  justify-content:space-between;
-  margin-top:20px;
+.driver-status {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 /* DARK MODE */
-.dark{
-  background:#1a1a1a;
-  color:white;
+.dark {
+  background: #1a1a1a;
+  color: white;
 }
