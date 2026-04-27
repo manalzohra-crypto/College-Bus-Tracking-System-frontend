@@ -1,6 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bus Live</title>
+
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+</head>
+
+<body>
+
+<div class="app-shell">
+
 <header class="app-header glass">
   <div>
-    <p class="eyebrow">Campus shuttle tracking</p>
+    <p>Campus shuttle tracking</p>
     <h1>Bus Live</h1>
   </div>
 
@@ -9,3 +24,20 @@
     Live
   </div>
 </header>
+
+<section class="map-panel glass">
+  <div class="map-topbar">
+    <span>Live Map</span>
+    <button id="toggle-center" class="pill-button">Center</button>
+  </div>
+
+  <div id="map" class="map-frame"></div>
+</section>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="./script.js"></script>
+
+</body>
+</html>

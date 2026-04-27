@@ -1,85 +1,59 @@
-:root {
-  --bg: linear-gradient(135deg, #1a1a1a, #2b2b2b);
-  --glass: rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.1);
-
-  --text: #f5f5f5;
-  --muted: #aaa;
-
-  --accent: #ff4d6d; /* blood red */
-  --highlight: #ff7b00;
-  --success: #2ecc71;
-
-  --shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  margin:0;
+  font-family: Arial;
+  background:#1a1a1a;
+  color:white;
 }
 
-/* CENTER LAYOUT */
 .app-shell {
-  max-width: 1400px;
-  margin: auto;
-  padding: 30px;
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
 }
 
-/* DRIVER */
+.glass {
+  background: rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:20px;
+}
+
+.map-frame {
+  height:500px;
+  border-radius:20px;
+}
+
+.driver-shell {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
 .driver-status-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
 }
 
 .status-badge {
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
+  padding:5px 10px;
+  border-radius:20px;
 }
 
-.status-badge.live { background: #2ecc71; }
-.status-badge.sending { background: orange; }
-.status-badge.offline { background: red; }
-.status-badge.idle { background: gray; }
+.live { background:green; }
+.sending { background:orange; }
+.offline { background:red; }
+.idle { background:gray; }
 
-/* LIVE DOT */
 .live-indicator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 .live-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
-}
-
-/* MAP */
-.map-frame {
-  height: 520px;
-  border-radius: 20px;
-}
-
-/* WIDER SECTIONS */
-.key-metrics {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 20px;
-}
-
-/* BUTTON */
-.pill-button {
-  background: linear-gradient(135deg, var(--accent), var(--highlight));
-  border: none;
-  padding: 10px 18px;
-  border-radius: 999px;
-  color: white;
-  cursor: pointer;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:red;
 }
