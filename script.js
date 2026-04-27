@@ -2,7 +2,7 @@ const API = 'https://college-bus-tracking-system-zeam.onrender.com/buses';
 
 const map = L.map('map').setView([12.9716, 77.5946], 13);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{z}/{x}/{y}.png'.replace('{z}/{z}', '{z}'), {
   maxZoom: 19,
 }).addTo(map);
 
@@ -12,44 +12,20 @@ let lastPositions = {};
 
 const busFilter = document.getElementById("bus-filter");
 
-/* DARK MODE */
+/* THEME */
 const toggleBtn = document.getElementById("theme-toggle");
-
-if(localStorage.getItem("theme") === "light"){
-  document.body.classList.add("light");
-}
-
 toggleBtn.onclick = () => {
   document.body.classList.toggle("light");
-
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("light") ? "light" : "dark"
-  );
 };
 
-/* CENTER TOGGLE */
+/* CENTER */
 document.getElementById('toggle-center').onclick = () => {
   autoCenter = !autoCenter;
 };
 
-/* SMOOTH ANIMATION */
+/* SMOOTH */
 function smoothMove(marker, newLatLng) {
-  const current = marker.getLatLng();
-  const steps = 10;
-  let i = 0;
-
-  const deltaLat = (newLatLng.lat - current.lat) / steps;
-  const deltaLng = (newLatLng.lng - current.lng) / steps;
-
-  const interval = setInterval(() => {
-    i++;
-    marker.setLatLng([
-      current.lat + deltaLat * i,
-      current.lng + deltaLng * i
-    ]);
-    if (i >= steps) clearInterval(interval);
-  }, 50);
+  marker.setLatLng(newLatLng);
 }
 
 /* ETA */
@@ -61,25 +37,29 @@ function calculateETA(prev, curr) {
     [curr.lat, curr.lng]
   );
 
-  const time = 3;
-  const speed = dist / time;
-
+  const speed = dist / 3;
   if(speed < 0.5) return "Stopped";
 
-  const eta = 300 / speed;
-  return Math.round(eta) + " sec";
+  return Math.round(300 / speed) + " sec";
 }
 
 async function update() {
   try {
     const res = await fetch(API);
-    if (!res.ok) throw new Error("API error");
-
     const data = await res.json();
     const buses = data.buses || [];
 
-    /* Populate dropdown */
-    busFilter.innerHTML = '<option value="all">All Buses</option>';
+    document.getElementById("active-buses-count").textContent = buses.length;
+
+    /* PRESERVE SELECTION */
+    const currentSelection = busFilter.value || "all";
+
+    busFilter.innerHTML = '';
+    
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Buses";
+    busFilter.appendChild(allOption);
 
     buses.forEach(bus => {
       const option = document.createElement("option");
@@ -88,13 +68,11 @@ async function update() {
       busFilter.appendChild(option);
     });
 
-    document.getElementById("active-buses-count").textContent = buses.length;
-
-    const selectedBus = busFilter.value;
+    busFilter.value = currentSelection;
 
     buses.forEach(bus => {
 
-      if(selectedBus !== "all" && bus.bus_id !== selectedBus){
+      if(currentSelection !== "all" && bus.bus_id !== currentSelection){
         if(markers[bus.bus_id]){
           map.removeLayer(markers[bus.bus_id]);
         }
@@ -109,16 +87,15 @@ async function update() {
         smoothMove(markers[bus_id], location);
       }
 
-      const eta = calculateETA(lastPositions[bus_id], location);
       lastPositions[bus_id] = location;
 
       if (autoCenter) {
-        map.panTo([location.lat, location.lng], {animate:true});
+        map.panTo([location.lat, location.lng]);
       }
     });
 
   } catch (e) {
-    console.error("Error:", e);
+    console.error(e);
   }
 }
 

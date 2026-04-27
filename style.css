@@ -1,46 +1,23 @@
-:root {
-  --bg: #121212;
-  --card: rgba(255,255,255,0.05);
-  --text: #f5f5f5;
-
-  --accent: #ff4d6d;
-  --nude: #d6bfa9;
-  --highlight: #ff7b00;
-
-  --border: rgba(255,255,255,0.1);
-}
-
-/* LIGHT MODE */
-body.light {
-  --bg: #f5efe8;
-  --card: rgba(255,255,255,0.85);
-  --text: #222;
-
-  --accent: #d62828;
-  --nude: #e6ccb2;
-  --highlight: #f77f00;
-
-  --border: rgba(0,0,0,0.1);
-}
-
 body {
   margin:0;
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: Arial;
+  background:#121212;
+  color:white;
 }
 
+/* CENTER MAIN */
 .app-shell {
-  max-width: 1400px;
+  max-width:1200px;
   margin:auto;
   padding:20px;
 }
 
+/* CARD STYLE */
 .glass {
-  background: var(--card);
-  border:1px solid var(--border);
+  background: rgba(255,255,255,0.05);
   border-radius:20px;
   padding:20px;
+  margin-bottom:20px;
 }
 
 /* HEADER */
@@ -52,23 +29,22 @@ body {
 
 .header-controls {
   display:flex;
+  gap:10px;
   align-items:center;
-  gap:15px;
 }
 
 /* LIVE DOT */
 .live-indicator {
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
 }
 
 .live-dot {
   width:10px;
   height:10px;
   border-radius:50%;
-  background: var(--accent);
-  box-shadow:0 0 10px var(--accent);
+  background:red;
 }
 
 /* CONTROLS */
@@ -76,9 +52,6 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:20px 0;
-  flex-wrap:wrap;
-  gap:15px;
 }
 
 .control-group {
@@ -86,36 +59,56 @@ body {
   flex-direction:column;
 }
 
-select {
-  padding:8px;
-  border-radius:8px;
-  border:none;
-}
-
 /* MAP */
 .map-frame {
-  height:520px;
+  height:500px;
   border-radius:20px;
 }
 
 /* BUTTON */
 .pill-button {
-  background: linear-gradient(135deg, var(--accent), var(--highlight));
+  background: orange;
   border:none;
-  padding:8px 14px;
-  border-radius:999px;
+  padding:8px 12px;
+  border-radius:20px;
   color:white;
   cursor:pointer;
 }
 
-/* RESPONSIVE */
-@media (max-width:768px){
-  .controls {
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .map-frame {
-    height:350px;
-  }
+/* DRIVER PANEL */
+.driver-shell {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
+
+.driver-card {
+  width:320px;
+  text-align:center;
+}
+
+.driver-card input {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+}
+
+/* STATUS */
+.driver-status-row {
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+
+.status-badge {
+  padding:5px 10px;
+  border-radius:20px;
+}
+
+.live { background:green; }
+.sending { background:orange; }
+.offline { background:red; }
+.idle { background:gray; }
