@@ -1,65 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campus Bus Live</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<title>Bus Live</title>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 </head>
 
 <body>
-  <div class="app-shell">
 
-    <header class="app-header glass">
-      <div>
-        <p class="eyebrow">Campus shuttle tracking</p>
-        <h1>Bus Live</h1>
-        <p class="intro">Real-time campus shuttle tracking</p>
-      </div>
-      <span class="status-chip">Live</span>
-    </header>
+<div class="app-shell">
 
-    <section class="key-metrics glass">
-      <div class="metric-card">
-        <span>Active buses</span>
-        <strong id="active-buses-count">0</strong>
-      </div>
-      <div class="metric-card">
-        <span>Tracking</span>
-        <strong id="tracked-bus">All</strong>
-      </div>
-      <div class="metric-card">
-        <span>Last update</span>
-        <strong id="last-update">—</strong>
-      </div>
-    </section>
-
-    <section class="bus-selector glass">
-      <label>Select bus:</label>
-      <select id="bus-filter">
-        <option value="all">All buses</option>
-      </select>
-    </section>
-
-    <section class="map-panel glass">
-      <div class="map-topbar">
-        <span>Live positions</span>
-        <button id="toggle-center" class="pill-button">Center</button>
-      </div>
-
-      <div id="map" class="map-frame"></div>
-
-      <div id="buses-list" class="buses-list"></div>
-    </section>
-
+<header class="app-header glass">
+  <div>
+    <h1>Bus Live</h1>
+    <p>Real-time campus tracking</p>
   </div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="script.js"></script>
+  <div class="status-circle">LIVE</div>
+</header>
+
+<section class="controls">
+  <button id="center-btn">Center</button>
+  <button id="dark-btn">Dark Mode</button>
+</section>
+
+<div id="map"></div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>

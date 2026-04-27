@@ -1,58 +1,60 @@
-const API = 'https://college-bus-tracking-system-zeam.onrender.com/buses';
+const API = "https://your-render-url.onrender.com/buses";
 
-const map = L.map('map');
-let mapInitialized = false;
+let map = L.map("map").setView([0,0],15);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-const markers = {};
+let markers = {};
+let lastPositions = {};
 let autoCenter = true;
 
-document.getElementById('toggle-center').onclick = () => {
-  autoCenter = !autoCenter;
-};
+async function update(){
 
-async function update() {
-  try {
-    const res = await fetch(API);
-    const data = await res.json();
-    const buses = data.buses || [];
+  let res = await fetch(API);
+  let data = await res.json();
 
-    document.getElementById('active-buses-count').textContent = buses.length;
+  data.buses.forEach(bus => {
 
-    if (buses.length === 0) {
-      map.setView([20, 0], 2);
-      return;
+    let {bus_id, location} = bus;
+
+    if(!markers[bus_id]){
+      markers[bus_id] = L.marker([location.lat,location.lng]).addTo(map);
+      map.setView([location.lat,location.lng],15);
     }
 
-    buses.forEach(bus => {
-      const {bus_id, location} = bus;
+    // Smooth movement
+    let prev = lastPositions[bus_id];
+    if(prev){
+      let steps = 10;
+      let latStep = (location.lat - prev.lat)/steps;
+      let lngStep = (location.lng - prev.lng)/steps;
 
-      if (!mapInitialized) {
-        map.setView([location.lat, location.lng], 15);
-        mapInitialized = true;
-      }
+      let i=0;
+      let interval = setInterval(()=>{
+        i++;
+        let newLat = prev.lat + latStep*i;
+        let newLng = prev.lng + lngStep*i;
+        markers[bus_id].setLatLng([newLat,newLng]);
+        if(i>=steps) clearInterval(interval);
+      },50);
+    }
 
-      if (!markers[bus_id]) {
-        markers[bus_id] = L.marker([location.lat, location.lng]).addTo(map);
-      } else {
-        markers[bus_id].setLatLng([location.lat, location.lng]);
-      }
+    lastPositions[bus_id] = location;
 
-      if (autoCenter) {
-        map.panTo([location.lat, location.lng]);
-      }
-    });
+    if(autoCenter){
+      map.panTo([location.lat,location.lng]);
+    }
 
-    document.getElementById('last-update').textContent =
-      new Date().toLocaleTimeString();
+  });
 
-  } catch (e) {
-    console.error(e);
-  }
 }
 
-update();
-setInterval(update, 3000);
+setInterval(update,2000);
+
+document.getElementById("center-btn").onclick = ()=>{
+  autoCenter = true;
+};
+
+document.getElementById("dark-btn").onclick = ()=>{
+  document.body.classList.toggle("dark");
+};
