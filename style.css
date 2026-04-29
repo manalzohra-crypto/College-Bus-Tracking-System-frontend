@@ -1,50 +1,49 @@
 :root {
-  --bg: #EFE7E;
+  --bg: #EFECE7;
   --card: #ffffff;
   --text: #2B2B23;
 
   --accent: #D8560E;
   --secondary: #6777B6;
-  --soft: #F8CABA;
-  --soft-green: #CBD183;
 
-  --border: rgba(0,0,0,0.1);
+  --border: rgba(0,0,0,0.08);
 }
 
 /* DARK MODE */
 body.dark {
   --bg: #2B2B23;
-  --card: #1e1e1e;
-  --text: #EFE7E;
+  --card: #1E1E1E;
+  --text: #EFECE7;
 
   --accent: #D8560E;
   --secondary: #6777B6;
-  --soft: #3a2a2a;
-  --soft-green: #2e3a2e;
 
-  --border: rgba(255,255,255,0.1);
+  --border: rgba(255,255,255,0.08);
 }
 
 body {
   margin:0;
-  font-family: Arial;
+  font-family: 'Inter', Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  transition: all 0.3s ease;
 }
 
 /* LAYOUT */
 .app-shell {
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
 }
 
+/* CARD */
 .glass {
   background: var(--card);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:20px;
-  border:1px solid var(--border);
+  border-radius: 28px;
+  padding: 22px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
 }
 
 /* HEADER */
@@ -52,15 +51,23 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
 }
 
 .header-controls {
   display:flex;
-  gap:10px;
+  gap:12px;
   align-items:center;
 }
 
 /* LIVE DOT */
+.live-indicator {
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
 .live-dot {
   width:10px;
   height:10px;
@@ -73,49 +80,99 @@ body {
   display:flex;
   justify-content:space-between;
   align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.control-group {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 select {
-  padding:8px;
-  border-radius:8px;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
 }
 
 /* MAP */
 .map-frame {
-  height:500px;
-  border-radius:20px;
+  height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 /* BUTTON */
 .pill-button {
   background: var(--accent);
   border:none;
-  padding:8px 12px;
-  border-radius:20px;
+  padding:8px 14px;
+  border-radius:999px;
   color:white;
   cursor:pointer;
 }
 
-/* DRIVER */
+/* DRIVER PANEL */
 .driver-shell {
-  height:100vh;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:20px;
 }
 
 .driver-card {
-  width:320px;
+  width:100%;
+  max-width:350px;
   text-align:center;
 }
 
+.driver-card input {
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  margin-top:10px;
+}
+
 /* STATUS */
+.driver-status-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:20px;
+}
+
 .status-badge {
   padding:6px 12px;
   border-radius:20px;
+  font-size:13px;
 }
 
 .live { background:#2ecc71; }
 .sending { background:orange; }
 .offline { background:red; }
 .idle { background:gray; }
+
+/* 📱 MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 15px;
+  }
+
+  .glass {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .map-frame {
+    height: 360px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+}
