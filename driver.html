@@ -8,7 +8,7 @@
 
 <body>
 
-<button id="theme-toggle" class="pill-button" style="position:absolute;top:20px;right:20px;">🌗</button>
+<button id="theme-toggle" class="pill-button theme-btn">🌗</button>
 
 <div class="driver-shell">
   <div class="driver-card glass">
@@ -49,17 +49,22 @@ function setStatus(text, cls){
   el.className = "status-badge " + cls;
 }
 
-/* SEND LOCATION */
+/* GPS SEND */
 function sendLocation() {
+
+  if(location.protocol !== "https:" && location.hostname !== "localhost"){
+    setStatus("HTTPS Needed", "offline");
+    return;
+  }
 
   if (!navigator.geolocation) {
     setStatus("No GPS", "offline");
     return;
   }
 
-  setStatus("Sending", "sending");
-
   navigator.geolocation.getCurrentPosition(async pos => {
+
+    setStatus("Sending", "sending");
 
     try {
       await fetch(API, {
@@ -83,7 +88,7 @@ function sendLocation() {
   });
 }
 
-setInterval(sendLocation, 3000);
+setInterval(sendLocation, 4000);
 </script>
 
 </body>
