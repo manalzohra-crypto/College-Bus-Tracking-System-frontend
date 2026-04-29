@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Driver Panel</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+
+<button id="theme-toggle" class="pill-button" style="position:absolute;top:20px;right:20px;">🌗</button>
 
 <div class="driver-shell">
   <div class="driver-card glass">
@@ -25,12 +28,30 @@
 <script>
 const API = 'https://college-bus-tracking-system-zeam.onrender.com/update';
 
+/* THEME */
+const toggleBtn = document.getElementById("theme-toggle");
+
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add("dark");
+}
+
+toggleBtn.onclick = () => {
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
+};
+
+/* STATUS */
 function setStatus(text, cls){
   const el = document.getElementById('driver-status');
   el.textContent = text;
   el.className = "status-badge " + cls;
 }
 
+/* SEND LOCATION */
 function sendLocation() {
 
   if (!navigator.geolocation) {
@@ -42,17 +63,22 @@ function sendLocation() {
 
   navigator.geolocation.getCurrentPosition(async pos => {
 
-    await fetch(API, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        bus_id: document.getElementById('bus-id-input').value,
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      })
-    });
+    try {
+      await fetch(API, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          bus_id: document.getElementById('bus-id-input').value.trim() || "Bus-1",
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude
+        })
+      });
 
-    setStatus("Live", "live");
+      setStatus("Live", "live");
+
+    } catch {
+      setStatus("Offline", "offline");
+    }
 
   }, () => {
     setStatus("Denied", "offline");

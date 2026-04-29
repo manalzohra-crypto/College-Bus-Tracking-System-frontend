@@ -1,23 +1,50 @@
+:root {
+  --bg: #EFE7E;
+  --card: #ffffff;
+  --text: #2B2B23;
+
+  --accent: #D8560E;
+  --secondary: #6777B6;
+  --soft: #F8CABA;
+  --soft-green: #CBD183;
+
+  --border: rgba(0,0,0,0.1);
+}
+
+/* DARK MODE */
+body.dark {
+  --bg: #2B2B23;
+  --card: #1e1e1e;
+  --text: #EFE7E;
+
+  --accent: #D8560E;
+  --secondary: #6777B6;
+  --soft: #3a2a2a;
+  --soft-green: #2e3a2e;
+
+  --border: rgba(255,255,255,0.1);
+}
+
 body {
   margin:0;
   font-family: Arial;
-  background:#121212;
-  color:white;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* CENTER MAIN */
+/* LAYOUT */
 .app-shell {
   max-width:1200px;
   margin:auto;
   padding:20px;
 }
 
-/* CARD STYLE */
 .glass {
-  background: rgba(255,255,255,0.05);
+  background: var(--card);
   border-radius:20px;
   padding:20px;
   margin-bottom:20px;
+  border:1px solid var(--border);
 }
 
 /* HEADER */
@@ -34,17 +61,11 @@ body {
 }
 
 /* LIVE DOT */
-.live-indicator {
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
 .live-dot {
   width:10px;
   height:10px;
   border-radius:50%;
-  background:red;
+  background: var(--accent);
 }
 
 /* CONTROLS */
@@ -54,9 +75,9 @@ body {
   align-items:center;
 }
 
-.control-group {
-  display:flex;
-  flex-direction:column;
+select {
+  padding:8px;
+  border-radius:8px;
 }
 
 /* MAP */
@@ -67,7 +88,7 @@ body {
 
 /* BUTTON */
 .pill-button {
-  background: orange;
+  background: var(--accent);
   border:none;
   padding:8px 12px;
   border-radius:20px;
@@ -75,7 +96,7 @@ body {
   cursor:pointer;
 }
 
-/* DRIVER PANEL */
+/* DRIVER */
 .driver-shell {
   height:100vh;
   display:flex;
@@ -88,27 +109,13 @@ body {
   text-align:center;
 }
 
-.driver-card input {
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-  border-radius:10px;
-  border:none;
-}
-
 /* STATUS */
-.driver-status-row {
-  display:flex;
-  justify-content:space-between;
-  margin-top:20px;
-}
-
 .status-badge {
-  padding:5px 10px;
+  padding:6px 12px;
   border-radius:20px;
 }
 
-.live { background:green; }
+.live { background:#2ecc71; }
 .sending { background:orange; }
 .offline { background:red; }
 .idle { background:gray; }

@@ -2,20 +2,29 @@ const API = 'https://college-bus-tracking-system-zeam.onrender.com/buses';
 
 const map = L.map('map').setView([12.9716, 77.5946], 13);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{z}/{x}/{y}.png'.replace('{z}/{z}', '{z}'), {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
 }).addTo(map);
 
 const markers = {};
 let autoCenter = true;
-let lastPositions = {};
 
 const busFilter = document.getElementById("bus-filter");
 
-/* THEME */
+/* 🌙 THEME FIX */
 const toggleBtn = document.getElementById("theme-toggle");
+
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add("dark");
+}
+
 toggleBtn.onclick = () => {
-  document.body.classList.toggle("light");
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
 };
 
 /* CENTER */
@@ -23,26 +32,7 @@ document.getElementById('toggle-center').onclick = () => {
   autoCenter = !autoCenter;
 };
 
-/* SMOOTH */
-function smoothMove(marker, newLatLng) {
-  marker.setLatLng(newLatLng);
-}
-
-/* ETA */
-function calculateETA(prev, curr) {
-  if (!prev) return "--";
-
-  const dist = map.distance(
-    [prev.lat, prev.lng],
-    [curr.lat, curr.lng]
-  );
-
-  const speed = dist / 3;
-  if(speed < 0.5) return "Stopped";
-
-  return Math.round(300 / speed) + " sec";
-}
-
+/* UPDATE */
 async function update() {
   try {
     const res = await fetch(API);
@@ -51,28 +41,22 @@ async function update() {
 
     document.getElementById("active-buses-count").textContent = buses.length;
 
-    /* PRESERVE SELECTION */
-    const currentSelection = busFilter.value || "all";
+    const selected = busFilter.value || "all";
 
-    busFilter.innerHTML = '';
-    
-    const allOption = document.createElement("option");
-    allOption.value = "all";
-    allOption.textContent = "All Buses";
-    busFilter.appendChild(allOption);
-
-    buses.forEach(bus => {
-      const option = document.createElement("option");
-      option.value = bus.bus_id;
-      option.textContent = bus.bus_id;
-      busFilter.appendChild(option);
-    });
-
-    busFilter.value = currentSelection;
+    /* Populate dropdown ONCE */
+    if(busFilter.options.length <= 1){
+      busFilter.innerHTML = '<option value="all">All Buses</option>';
+      buses.forEach(b => {
+        const o = document.createElement("option");
+        o.value = b.bus_id;
+        o.textContent = b.bus_id;
+        busFilter.appendChild(o);
+      });
+    }
 
     buses.forEach(bus => {
 
-      if(currentSelection !== "all" && bus.bus_id !== currentSelection){
+      if(selected !== "all" && bus.bus_id !== selected){
         if(markers[bus.bus_id]){
           map.removeLayer(markers[bus.bus_id]);
         }
@@ -82,12 +66,12 @@ async function update() {
       const {bus_id, location} = bus;
 
       if (!markers[bus_id]) {
-        markers[bus_id] = L.marker([location.lat, location.lng]).addTo(map);
+        markers[bus_id] = L.marker([location.lat, location.lng])
+          .addTo(map)
+          .bindPopup(`<b>${bus_id}</b>`);   // ✅ LABEL
       } else {
-        smoothMove(markers[bus_id], location);
+        markers[bus_id].setLatLng([location.lat, location.lng]);
       }
-
-      lastPositions[bus_id] = location;
 
       if (autoCenter) {
         map.panTo([location.lat, location.lng]);
